@@ -1,45 +1,43 @@
 #!/usr/bin/env python3
-import sys, time
+import sys, time, pygame
 import RPi.GPIO as GPIO
+from solenoidControl import solenoidCtrl
+
+# pygame setup
+background_color = (255,0,0)
+screen = pygame.display.set_mode((200,200))
+pygame.display.set_caption('Group 2 Control')
+screen.fill(background_color)
+pygame.display.flip()
 
 # pinlist and servo pin
-gpioList = [7,11,12,13,15,16,18,19,21,22,23,24,26,29,31,33,35,36,37,38,40,8]
-xB = [7,11,12,13]
-xF = [15,16]
-yL = [18,19,23,26]
-yR = [21,22,24,29]
-zT = [31,35,37,38]
-zB = [33,36,40,8]
 servoPin = 32
 
-# setup Pi GPIO
-GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
-
-# setup PWM Pin
-GPIO.setup(servoPin,GPIO.OUT)
-pwm0 = GPIO.PWM(servoPin,50)
-pwm0.start(2.5) #initial position
-
-def setOff():
-  global gpioList
-  for i in gpioList:
-    GPIO.output(i,GPIO.LOW)
-    
-def turnOn(pins):
-	for i in pins:
-		GPIO.output(i,GPIO.HIGH)
-
-def repeat():
-	global gpioList,xB,xF,yL,yR,zT,zB
-	for i in gpioList:
-		GPIO.setup(i,GPIO.OUT)
-	while True:
-		
+def repeat(sol):
+  Running = True
+  while Running:
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        Running = False
+      elif event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_UP:
+          sol.turnOn(sol.xB)
+        elif event.key == pygame.K_DOWN:
+          sol.turnOn(sol.xF)
+      elif event.type == pygame.KEYUP:
+        if event.key == pygame.K_UP:
+          sol.turnOff(sol.xB)
+        elif event.key == pygame.K_DOWN:
+          sol.turnOff(sol.xF)
 
 if __name__ == '__main__':
   try:
-    repeat()
+    sol = solenoidCtrl()
+    # setup PWM Pin
+    GPIO.setup(servoPin,GPIO.OUT)
+    pwm0 = GPIO.PWM(servoPin,50)
+    pwm0.start(2.5) #initial position
+    repeat(sol)
   except KeyboardInterrupt:
-    setOff()
+    sol.setOff()
     sys.exit(0)
