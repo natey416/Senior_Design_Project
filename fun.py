@@ -33,6 +33,18 @@ def repeat():
       GPIO.output(j,GPIO.LOW)
       time.sleep(0.1)
       
+def repeat2():
+  global gpioList
+  for i in gpioList:
+    GPIO.setup(i,GPIO.OUT)
+  pin = 12
+  while True:
+    frequency = 10
+    GPIO.output(pin,GPIO.HIGH)
+    time.sleep(1/frequency/2)
+    GPIO.output(pin,GPIO.LOW)
+    time.sleep(1/frequency/2)
+      
 def setOff():
   global gpioList
   for i in gpioList:
@@ -40,7 +52,7 @@ def setOff():
 
 if __name__ == '__main__':
   try:
-    repeat()
+    repeat2()
   except KeyboardInterrupt:
     setOff()
     sys.exit(0)

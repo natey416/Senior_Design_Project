@@ -24,11 +24,19 @@ def repeat(sol):
           sol.turnOn(sol.xB)
         elif event.key == pygame.K_DOWN:
           sol.turnOn(sol.xF)
+        elif event.key == pygame.K_LEFT:
+            sol.turnOn(sol.yL)
+        elif event.key == pygame.K_RIGHT:
+            sol.turnOn(sol.yR)
       elif event.type == pygame.KEYUP:
         if event.key == pygame.K_UP:
           sol.turnOff(sol.xB)
         elif event.key == pygame.K_DOWN:
           sol.turnOff(sol.xF)
+        elif event.key == pygame.K_LEFT:
+            sol.turnOff(sol.yL)
+        elif event.key == pygame.K_RIGHT:
+            sol.turnOff(sol.yR)
 
 if __name__ == '__main__':
   try:
