@@ -28,6 +28,10 @@ def repeat(sol):
             sol.turnOn(sol.yL)
         elif event.key == pygame.K_RIGHT:
             sol.turnOn(sol.yR)
+        elif event.key == pygame.K_w:
+            sol.turnOn(sol.zB)
+        elif event.key == pygame.K_s:
+            sol.turnOn(sol.zT)
       elif event.type == pygame.KEYUP:
         if event.key == pygame.K_UP:
           sol.turnOff(sol.xB)
@@ -37,6 +41,10 @@ def repeat(sol):
             sol.turnOff(sol.yL)
         elif event.key == pygame.K_RIGHT:
             sol.turnOff(sol.yR)
+        elif event.key == pygame.K_w:
+            sol.turnOff(sol.zB)
+        elif event.key == pygame.K_s:
+            sol.turnOff(sol.zT)
 
 if __name__ == '__main__':
   try:

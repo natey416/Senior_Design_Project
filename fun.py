@@ -25,13 +25,15 @@ def repeat():
       duty = duty + (12.5-2.5)/22
       pwm0.ChangeDutyCycle(duty)
       GPIO.output(j,GPIO.HIGH)
-      time.sleep(0.1)
+      print(j)
+      time.sleep(1)
     duty = 12.5
     for j in gpioList:
       duty = duty - (12.5-2.5)/22
       pwm0.ChangeDutyCycle(duty)
       GPIO.output(j,GPIO.LOW)
-      time.sleep(0.1)
+      print(j)
+      time.sleep(1)
       
 def repeat2():
   global gpioList
@@ -52,7 +54,7 @@ def setOff():
 
 if __name__ == '__main__':
   try:
-    repeat2()
+    repeat()
   except KeyboardInterrupt:
     setOff()
     sys.exit(0)
