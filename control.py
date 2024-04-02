@@ -15,11 +15,23 @@ servoPin = 32
 
 def repeat(sol):
   Running = True
+  joysticks = {}
+  stick_values = [0] * 6
+  
   while Running:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
         Running = False
-      elif event.type == pygame.KEYDOWN:
+        
+      if event.type == pygame.JOYDEVICEADDED:
+        joy = pygame.joystick.Joystick(event.device_index)
+        joysticks[joy.get_instance_id()] = joy
+        print(f"Joystick {joy.get_instance_id()} connected. {joy.get_numaxes()} axes detected")
+      if event.type == pygame.JOYDEVICEREMOVED:
+        del joysticks[event.instance_id]
+        print(f"Joystick {event.instance_id} disconnected")
+      
+      if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_UP:
           sol.turnOn(sol.xB)
         elif event.key == pygame.K_DOWN:
@@ -32,7 +44,8 @@ def repeat(sol):
             sol.turnOn(sol.zB)
         elif event.key == pygame.K_s:
             sol.turnOn(sol.zT)
-      elif event.type == pygame.KEYUP:
+            
+      if event.type == pygame.KEYUP:
         if event.key == pygame.K_UP:
           sol.turnOff(sol.xB)
         elif event.key == pygame.K_DOWN:
@@ -45,6 +58,15 @@ def repeat(sol):
             sol.turnOff(sol.zB)
         elif event.key == pygame.K_s:
             sol.turnOff(sol.zT)
+            
+    for joystick in joysticks.values():
+      axes = joystick.get_numaxes()
+      for i in range(axes):
+        stick_values[i] = round(joystick.get_axis(i),2)
+    
+        
+    
+    pygame.display.flip()
 
 if __name__ == '__main__':
   try:
@@ -53,7 +75,11 @@ if __name__ == '__main__':
     GPIO.setup(servoPin,GPIO.OUT)
     pwm0 = GPIO.PWM(servoPin,50)
     pwm0.start(2.5) #initial position
+    
+    pygame.joystick.init()
+    
     repeat(sol)
   except KeyboardInterrupt:
     sol.setOff()
+    pygame.quit()
     sys.exit(0)
