@@ -63,18 +63,36 @@ def repeat(sol):
       axes = joystick.get_numaxes()
       for i in range(axes):
         stick_values[i] = round(joystick.get_axis(i),2)
+
+    if stick_values[4] < 0:
+      sol.varCtrl(abs(stick_values[4]),sol.xB)
+    elif stick_values[4] > 0:
+      sol.varCtrl(stick_values[4],sol.xF)
+    else:
+      sol.turnOff(sol.xF)
+      sol.turnOff(sol.xB)
+      
+    if stick_values[3] < 0:
+      sol.varCtrl(abs(stick_values[3]),sol.yR)
+    elif stick_values[3] > 0:
+      sol.varCtrl(stick_values[3],sol.yL)
+    else:
+      sol.turnOff(sol.yL)
+      sol.turnOff(sol.yR)
     
-        
+    if stick_values[0] < 0:
+      sol.varCtrl(abs(stick_values[0]),sol.zCCW)
+    elif stick_values[0] > 0:
+      sol.varCtrl(stick_values[0],sol.zCW)
+    else:
+      sol.turnOff(sol.zCCW)
+      sol.turnOff(sol.zCW)
     
     pygame.display.flip()
 
 if __name__ == '__main__':
   try:
     sol = solenoidCtrl()
-    # setup PWM Pin
-    GPIO.setup(servoPin,GPIO.OUT)
-    pwm0 = GPIO.PWM(servoPin,50)
-    pwm0.start(2.5) #initial position
     
     pygame.joystick.init()
     
