@@ -63,30 +63,52 @@ def repeat(sol):
       axes = joystick.get_numaxes()
       for i in range(axes):
         stick_values[i] = round(joystick.get_axis(i),2)
+      button0 = joystick.get_button(0)
 
     if stick_values[4] < 0:
       sol.varCtrl(abs(stick_values[4]),sol.xB)
+      sol.turnOff(sol.xF)
     elif stick_values[4] > 0:
       sol.varCtrl(stick_values[4],sol.xF)
+      sol.turnOff(sol.xB)
     else:
       sol.turnOff(sol.xF)
       sol.turnOff(sol.xB)
       
     if stick_values[3] < 0:
       sol.varCtrl(abs(stick_values[3]),sol.yR)
+      sol.turnOff(sol.yL)
     elif stick_values[3] > 0:
       sol.varCtrl(stick_values[3],sol.yL)
+      sol.turnOff(sol.yR)
     else:
       sol.turnOff(sol.yL)
       sol.turnOff(sol.yR)
     
     if stick_values[0] < 0:
       sol.varCtrl(abs(stick_values[0]),sol.zCCW)
+      sol.turnOff(sol.zCW)
     elif stick_values[0] > 0:
       sol.varCtrl(stick_values[0],sol.zCW)
+      sol.turnOff(sol.zCCW)
     else:
       sol.turnOff(sol.zCCW)
       sol.turnOff(sol.zCW)
+    
+    if stick_values[1] < 0:
+      sol.varCtrl(abs(stick_values[1]),sol.zB)
+      sol.turnOff(sol.zT)
+    if stick_values[1] > 0:
+      sol.varCtrl(stick_values[1],sol.zT)
+      sol.turnOff(sol.zB)
+    else:
+      sol.turnOff(sol.zB)
+      sol.turnOff(sol.zT)
+    
+    if button0 == 1:
+      sol.setServo(12.5)
+    else:
+      sol.setServo(2.5)
     
     pygame.display.flip()
 

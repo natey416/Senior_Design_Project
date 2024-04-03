@@ -5,7 +5,7 @@ import RPi.GPIO as GPIO
 class solenoidCtrl():
   def __init__(self):
     self.deadzone = 0.20
-    self.deadMax = 0.80
+    self.deadMax = 0.85
     toggleFreqMax = 10 #hz
     self.thrustEqn = toggleFreqMax/self.deadMax
     self.gpioList = [7,11,12,13,15,16,18,19,21,22,23,24,26,29,31,33,35,36,37,38,40,8]
