@@ -1,19 +1,20 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 import sys, time
 import RPi.GPIO as GPIO
+import pigpio
 
 # pinlist and servo pin
 gpioList = [7,11,12,13,15,16,18,19,21,22,23,24,26,29,31,33,35,36,37,38,40,8]
-servoPin = 32
+servoPin = 12
 
 # setup Pi GPIO
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
 # setup PWM Pin
-GPIO.setup(servoPin,GPIO.OUT)
-pwm0 = GPIO.PWM(servoPin,50)
-pwm0.start(2.5) #initial position
+pwm = pigpio.pi()
+pwm.set_mode(servoPin, pigpio.OUTPUT)
+pwm.set_PWM_frequency(servoPin,50)
  
 def repeat():
   global gpioList
@@ -44,15 +45,27 @@ def repeat2():
     time.sleep(1/frequency/2)
     GPIO.output(pin,GPIO.LOW)
     time.sleep(1/frequency/2)
+
+def repeat3():
+  pwm.set_servo_pulsewidth(servoPin,500)
+  time.sleep(5)
+  pwm.set_servo_pulsewidth(servoPin,1500)
+  time.sleep(5)
+  pwm.set_servo_pulsewidth(servoPin,2000)
+  time.sleep(5)
+  pwm.set_servo_pulsewidth(servoPin,2500)
+  time.sleep(5)
       
 def setOff():
-  global gpioList
+  global gpioList, servoPin
   for i in gpioList:
     GPIO.output(i,GPIO.LOW)
+  pwm.set_PWM_dutycycle(servoPin,0)
+  pwm.set_PWM_frequency(servoPin,0)
 
 if __name__ == '__main__':
   try:
-    repeat()
+    repeat3()
   except KeyboardInterrupt:
     setOff()
     sys.exit(0)

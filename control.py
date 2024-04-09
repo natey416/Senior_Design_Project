@@ -71,18 +71,12 @@ def repeat(sol):
     elif stick_values[4] > 0:
       sol.varCtrl(stick_values[4],sol.xF)
       sol.turnOff(sol.xB)
-    else:
-      sol.turnOff(sol.xF)
-      sol.turnOff(sol.xB)
       
     if stick_values[3] < 0:
       sol.varCtrl(abs(stick_values[3]),sol.yR)
       sol.turnOff(sol.yL)
     elif stick_values[3] > 0:
       sol.varCtrl(stick_values[3],sol.yL)
-      sol.turnOff(sol.yR)
-    else:
-      sol.turnOff(sol.yL)
       sol.turnOff(sol.yR)
     
     if stick_values[0] < 0:
@@ -91,9 +85,6 @@ def repeat(sol):
     elif stick_values[0] > 0:
       sol.varCtrl(stick_values[0],sol.zCW)
       sol.turnOff(sol.zCCW)
-    else:
-      sol.turnOff(sol.zCCW)
-      sol.turnOff(sol.zCW)
     
     if stick_values[1] < 0:
       sol.varCtrl(abs(stick_values[1]),sol.zB)
@@ -101,14 +92,14 @@ def repeat(sol):
     if stick_values[1] > 0:
       sol.varCtrl(stick_values[1],sol.zT)
       sol.turnOff(sol.zB)
-    else:
-      sol.turnOff(sol.zB)
-      sol.turnOff(sol.zT)
+    
+    if stick_values[0] == 0 and stick_values[1] == 0 and stick_values[3] == 0 and stick_values[4] == 0:
+      sol.setOff()
     
     if button0 == 1:
-      sol.setServo(12.5)
+      sol.setServo(2500)
     else:
-      sol.setServo(2.5)
+      sol.setServo(1000)
     
     pygame.display.flip()
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import time
 import RPi.GPIO as GPIO
+import pigpio
 
 class solenoidCtrl():
   def __init__(self):
@@ -9,7 +10,7 @@ class solenoidCtrl():
     toggleFreqMax = 10 #hz
     self.thrustEqn = toggleFreqMax/self.deadMax
     self.gpioList = [7,11,12,13,15,16,18,19,21,22,23,24,26,29,31,33,35,36,37,38,40,8]
-    self.servoPin = 32
+    self.servoPin = 12 #uses GPIO NAMING, NOT PINS
     # Thruster maps to pins
     self.APHX = 7
     self.APLX = 11
@@ -53,9 +54,9 @@ class solenoidCtrl():
     for i in self.gpioList:
       GPIO.setup(i,GPIO.OUT)
     
-    GPIO.setup(self.servoPin,GPIO.OUT)
-    self.pwm0 = GPIO.PWM(self.servoPin,50)
-    self.pwm0.start(1.5) #initial position    
+    self.pwm = pigpio.pi()
+    self.pwm.set_mode(self.servoPin, pigpio.OUTPUT)
+    self.pwm.set_PWM_frequency(self.servoPin,50)
 
   def setOff(self):
     for i in self.gpioList:
@@ -85,4 +86,4 @@ class solenoidCtrl():
       time.sleep(1/frequency/2)
     
   def setServo(self,percent):
-    self.pwm0.ChangeDutyCycle(percent)
+    self.pwm.set_servo_pulsewidth(self.servoPin,percent)
