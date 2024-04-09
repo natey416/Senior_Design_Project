@@ -5,7 +5,7 @@ import pigpio
 
 class solenoidCtrl():
   def __init__(self):
-    self.deadzone = 0.20
+    self.deadzone = 0.25
     self.deadMax = 0.85
     toggleFreqMax = 10 #hz
     self.thrustEqn = toggleFreqMax/self.deadMax

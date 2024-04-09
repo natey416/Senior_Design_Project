@@ -73,11 +73,11 @@ def repeat(sol):
       sol.turnOff(sol.xB)
       
     if stick_values[3] < 0:
-      sol.varCtrl(abs(stick_values[3]),sol.yR)
-      sol.turnOff(sol.yL)
-    elif stick_values[3] > 0:
-      sol.varCtrl(stick_values[3],sol.yL)
+      sol.varCtrl(abs(stick_values[3]),sol.yL)
       sol.turnOff(sol.yR)
+    elif stick_values[3] > 0:
+      sol.varCtrl(stick_values[3],sol.yR)
+      sol.turnOff(sol.yL)
     
     if stick_values[0] < 0:
       sol.varCtrl(abs(stick_values[0]),sol.zCCW)
